@@ -20,40 +20,40 @@ Built with a **100% Zero-Cost Guarantee ($0.00 GCP spend)** using local Docker C
 ```mermaid
 flowchart TD
     subgraph Ingestion ["1. Real-Time & Streaming Ingestion"]
-        A[Python Event Streamer] -->|Stream JSON Events| B[GCP Pub/Sub Topic]
-        B -->|Subscribe / Micro-batch| C[Python Stream Consumer]
+        A["Python Event Streamer"] -->|Stream JSON Events| B["GCP Pub/Sub Topic"]
+        B -->|Subscribe / Micro-batch| C["Python Stream Consumer"]
     end
 
     subgraph Warehouse ["2. dbt & BigQuery Medallion Data Warehouse"]
-        C -->|Raw JSON Loads| D[([Bronze Layer: ecom_bronze.raw_orders])]
+        C -->|Raw JSON Loads| D["Bronze Layer: ecom_bronze.raw_orders"]
         
         subgraph DBT ["dbt Transformation Models & Automated Quality Tests"]
-            D -->|dbt run models/silver/orders_cleaned.sql| E[([Silver Layer: ecom_silver.orders_cleaned])]
-            E -->|dbt run models/gold/fact_orders.sql| F[([Gold Layer: fact_orders & dim_products])]
-            F -->|dbt run models/gold/agg_daily_sales.sql| G[([Gold Layer: agg_daily_sales])]
-            E -->|dbt test schema.yml| H1[Automated Quality Checks: unique, not_null]
+            D -->|dbt run| E["Silver Layer: ecom_silver.orders_cleaned"]
+            E -->|dbt run| F["Gold Layer: fact_orders & dim_products"]
+            F -->|dbt run| G["Gold Layer: agg_daily_sales"]
+            E -->|dbt test| H1["Automated Quality Checks: unique, not_null"]
         end
     end
 
     subgraph AI ["3. AI & ML Enrichment (Vertex AI / Gemini)"]
-        E -->|Review Payload| H[Vertex AI / Gemini API]
-        H -->|Sentiment & Fraud Scores| I[([Gold Layer: ai_enriched_reviews])]
+        E -->|Review Payload| H["Vertex AI / Gemini API"]
+        H -->|Sentiment & Fraud Scores| I["Gold Layer: ai_enriched_reviews"]
     end
 
     subgraph Orchestration ["4. Pipeline Orchestration"]
-        J[Apache Airflow / Cloud Composer 2] -->|Schedule & Healthcheck| C
+        J["Apache Airflow / Cloud Composer 2"] -->|Schedule & Healthcheck| C
         J -->|DAG 03: dbt run & dbt test| DBT
         J -->|Trigger AI Enrichment| H
     end
 
     subgraph BI ["5. Analytics & Visualization"]
-        F --> K[Looker Studio Dashboards]
+        F --> K["Looker Studio Dashboards"]
         G --> K
         I --> K
     end
 
     classDef gcp fill:#e8f0fe,stroke:#1a73e8,stroke-width:2px,color:#174ea6;
-    class A,B,C,D,E,F,G,H,I,J,K gcp;
+    class A,B,C,D,E,F,G,H,I,J,K,H1 gcp;
 ```
 
 ---
@@ -77,7 +77,7 @@ flowchart TD
    - Automated sentiment analysis (`POSITIVE`, `NEGATIVE`, `NEUTRAL`) and transaction anomaly scoring (`SUSPICIOUS`, `NORMAL`) on customer product reviews.
 
 5. **Production Cloud Composer / Airflow Orchestration**:
-   - Airflow DAGs (`01_order_streaming_health_dag`, `02_daily_medallion_elt_dag`, `03_dbt_medallion_pipeline_dag`) orchestrating streaming health, native SQL, and dbt models.
+   - Airflow DAGs (`01_order_streaming_health_dag`, `02_daily_elt_analytics_dag`, `03_dbt_medallion_pipeline_dag`) orchestrating streaming health, native SQL, and dbt models.
 
 ---
 
