@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "bigquery": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-bigquery"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "./credentials/gcp_key.json",
+        "GCP_PROJECT_ID": "dataeng-505315"
+      }
+    }
+  }
+}

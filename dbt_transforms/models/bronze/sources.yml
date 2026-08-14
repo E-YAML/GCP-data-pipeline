@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ecom_bronze
+    database: "{{ env_var('GCP_PROJECT_ID', 'dataeng-505315') }}"
+    schema: ecom_bronze
+    tables:
+      - name: raw_orders
+        description: "Raw streaming orders ingested from GCP Pub/Sub"

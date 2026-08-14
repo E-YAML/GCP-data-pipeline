@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Credentials & Sensitive Data
+credentials/
+*.json
+!config/mcp_config.json
+.env
+
+# Local Airflow & Streaming Data
+logs/
+plugins/
+streaming/local_event_buffer.jsonl
+sql_transforms/ai_enriched_reviews.jsonl
+
+# Terraform Local State
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# IDE & System
+.vscode/
+.idea/
+.DS_Store

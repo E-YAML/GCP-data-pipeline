@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: orders_cleaned
+    description: "Silver layer clean, deduplicated order records"
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: fact_orders
+    description: "Gold layer orders fact table"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_products
+    description: "Gold layer product dimension catalog"
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
